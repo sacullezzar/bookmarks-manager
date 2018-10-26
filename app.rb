@@ -1,24 +1,17 @@
 require 'sinatra/base'
-require './lib/bookmark.rb'
+#require './lib/chitter.rb'
 
-class BookmarkManager < Sinatra::Base
+class Chitter < Sinatra::Base
+enable :sessions
 
   get '/' do
-    redirect '/bookmarks'
+    erb :index
   end
 
-  get '/bookmarks' do
-    @bookmarks = Bookmark.all
-    erb :'bookmarks/index'
-  end
+  post '/incoming' do
+    Message.new(params[:message])
 
-  get '/add' do
-    erb :'bookmarks/add'
-  end
-
-  post '/temp' do
-    Bookmark.add(params[:URL], params[:Title])
-    redirect '/add'
+    redirect '/'
   end
 
   run! if app_file == $0
